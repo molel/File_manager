@@ -28,12 +28,11 @@ class FileManager:
             "movefiles": self.move_files,
             "renamefile": self.rename_file,
         }
-        self.path = os.getcwd() + "\\"
+        self.path = os.getcwd()
         self.configure_window()
 
     def configure_window(self):
         self.window.title("File manager")
-        self.window.geometry("600x388")
         self.window.bind('<Return>', self.get_command)
         self.top_frame.configure(bg="#20805E")
         self.bottom_frame.configure(bg="#20805E")
@@ -83,7 +82,7 @@ class FileManager:
         else:
             dirName = args[0]
             try:
-                os.mkdir(self.path + dirName)
+                os.mkdir(self.path + os.sep + dirName)
                 self.display_dir_content()
             except Exception as e:
                 showerror("Warning", str(e))
@@ -94,7 +93,7 @@ class FileManager:
         else:
             dirName = args[0]
             try:
-                shutil.rmtree(self.path + dirName)
+                shutil.rmtree(self.path + os.sep + dirName)
                 self.display_dir_content()
             except Exception as e:
                 showerror("Warning", str(e))
