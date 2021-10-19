@@ -68,13 +68,13 @@ class FileManager:
     def get_command(self, event):
         line = self.console.get().split(" ")
         self.console.delete(0, END)
-        self.display_path()
         if len(line) > 0:
             command, arguments = line[0], line[1:]
             if command in self.commands.keys():
                 self.commands[command](*arguments)
             else:
                 showerror("Warning", "There is no such command")
+            self.display_path()
 
     def create_dir(self, *args):
         if len(args) > 1:
