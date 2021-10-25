@@ -27,8 +27,8 @@ class FileManager:
             "copyfiles": self.copy_files,  # создать каталог: copyfiles dirname
             "movefiles": self.move_files,  # создать каталог: movefiles filename1 ... filenameN dirname
             "renamefile": self.rename_file,  # создать каталог: renamefile old_name new_name
-            "archive": self.archive,
-            "extract": self.extract
+            "archive": self.archive,  # архифировать файлы: archive filename1 ... filenameN
+            "extract": self.extract  # разархифировать архив: extract archive_name
         }
         self.root = self.set_root()  # текущий путь
         self.path = ""  # видимый для пользователя путь
