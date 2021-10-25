@@ -28,7 +28,7 @@ class FileManager:
             "movefiles": self.move_files,  # создать каталог: movefiles filename1 ... filenameN dirname
             "renamefile": self.rename_file,  # создать каталог: renamefile old_name new_name
             "archive": self.archive,
-            "extract":self.extract
+            "extract": self.extract
         }
         self.root = self.set_root()  # текущий путь
         self.path = ""  # видимый для пользователя путь
@@ -37,7 +37,9 @@ class FileManager:
     # установка корневого каталога
     @staticmethod
     def set_root():
-        os.chdir("root")
+        with open("setting.txt", "r") as file:
+            rootdir = file.read().split('"')[1].replace("\\", "\\\\")
+        os.chdir(rootdir)
         return os.getcwd()
 
     # настройка окна
