@@ -3,6 +3,7 @@ import shutil
 from tkinter import *
 from tkinter.font import Font
 from tkinter.messagebox import showerror
+from zipfile import ZipFile
 
 
 class FileManager:
@@ -26,6 +27,8 @@ class FileManager:
             "copyfiles": self.copy_files,  # создать каталог: copyfiles dirname
             "movefiles": self.move_files,  # создать каталог: movefiles filename1 ... filenameN dirname
             "renamefile": self.rename_file,  # создать каталог: renamefile old_name new_name
+            "archive": self.archive,
+            "extract":self.extract
         }
         self.root = self.set_root()  # текущий путь
         self.path = ""  # видимый для пользователя путь
@@ -207,6 +210,30 @@ class FileManager:
                 new_file_name += ".txt"
             os.rename(file_name, new_file_name)
         self.display_dir_content()
+
+    def archive(self, *args):
+        if len(args) < 1:
+            showerror("Warning", "Too few arguments")
+        else:
+            try:
+                with ZipFile(args[0].split(".")[0] + ".zip", "w") as zip_file:
+                    for file_name in args:
+                        zip_file.write(file_name)
+                    self.display_dir_content()
+            except Exception as e:
+                showerror("Warning", str(e))
+
+    def extract(self, *args):
+        if len(args) > 1:
+            showerror("Warning", "Too many arguments")
+        else:
+            try:
+                with ZipFile(args[0]) as zip_file:
+                    self.create_dir(args[0].replace(".zip", ""))
+                    zip_file.extractall(args[0].replace(".zip", ""))
+                    self.display_dir_content()
+            except Exception as e:
+                showerror("Warning", str(e))
 
 
 def main():
