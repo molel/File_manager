@@ -106,7 +106,7 @@ class FileManager:
                 os.mkdir(os.getcwd() + os.sep + dirName)
                 self.display_dir_content()
             except Exception as e:
-                showerror("Warning", str(e))
+                showerror("Warning", e.args[1])
 
     # удаление каталога
     def remove_dir(self, *args):
@@ -118,7 +118,7 @@ class FileManager:
                 shutil.rmtree(os.getcwd() + os.sep + dirName)
                 self.display_dir_content()
             except Exception as e:
-                showerror("Warning", str(e))
+                showerror("Warning", e.args[1])
 
     # изменение текущего каталога
     def change_dir(self, *args):
@@ -129,13 +129,13 @@ class FileManager:
                 temp_path: str = os.getcwd()
                 os.chdir(args[0])
                 if self.root not in os.getcwd():
-                    showerror("Warning", "Incorrect path")
+                    showerror("Warning", "Указан некорректный путь")
                     os.chdir(temp_path)
                 else:
                     self.path = os.getcwd().replace(self.root, "")
                     self.display_dir_content()
             except Exception as e:
-                showerror("Warning", str(e))
+                showerror("Warning", e.args[1])
 
     # создание пустых текстовых файлов
     def create_files(self, *args):
@@ -146,7 +146,7 @@ class FileManager:
                 open(file_name, 'a').close()
             self.display_dir_content()
         except Exception as e:
-            showerror("Warning", str(e))
+            showerror("Warning", e.args[1])
 
     # дозапись в текстовый файл
     def write_file(self, *args):
@@ -160,7 +160,7 @@ class FileManager:
                     file.write(" ".join(data) + "\n")
                 self.display_dir_content()
             except Exception as e:
-                showerror("Warning", str(e))
+                showerror("Warning", e.args[1])
 
     # вывод содержимого файла
     def read_file(self, *args):
@@ -172,7 +172,7 @@ class FileManager:
                 with open(file_name, 'r') as file:
                     self.display_content(file.readlines())
             except Exception as e:
-                showerror("Warning", str(e))
+                showerror("Warning", e.args[1])
 
     # удаление файлов
     def remove_files(self, *file_names):
@@ -181,7 +181,7 @@ class FileManager:
                 os.remove(file_name)
             self.display_dir_content()
         except Exception as e:
-            showerror("Warning", str(e))
+            showerror("Warning", e.args[1])
 
     # копирование файлов
     def copy_files(self, *args):
@@ -192,7 +192,7 @@ class FileManager:
                 shutil.copy(file_name, dirPath)
             self.display_dir_content()
         except Exception as e:
-            showerror("Warning", str(e))
+            showerror("Warning", e.args[1])
 
     # перемещение файлов
     def move_files(self, *args):
@@ -227,7 +227,7 @@ class FileManager:
                         zip_file.write(file_name)
                     self.display_dir_content()
             except Exception as e:
-                showerror("Warning", str(e))
+                showerror("Warning", e.args[1])
 
     def extract(self, *args):
         if len(args) > 1:
@@ -239,4 +239,4 @@ class FileManager:
                     zip_file.extractall(args[0].replace(".zip", ""))
                     self.display_dir_content()
             except Exception as e:
-                showerror("Warning", str(e))
+                showerror("Warning", e.args[1])
