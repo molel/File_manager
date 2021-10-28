@@ -1,1 +1,0 @@
-rootdir="C:\Users\79272\Desktop"
