@@ -7,16 +7,18 @@ from zipfile import ZipFile
 
 
 class FileManager:
+    SETTINGS: str = "settings.txt"
+
     def __init__(self):
-        self.window = Tk()  # окно
-        self.top_frame = Frame(self.window)  # верхнее поле для текстовых полей
-        self.bottom_frame = Frame(self.window)  # нижнее поле для поля ввода и вывода текущего пути
-        self.file_list = Listbox(self.top_frame, width=30, height=20)  # доступные каталоги
-        self.file_content = Listbox(self.top_frame, width=70, height=20)  # содержимое файла
-        self.text = StringVar()  # переменная для хранения текущего пути для его вывода
-        self.label = Label(self.bottom_frame, width=96, textvariable=self.text)  # текущий путь
-        self.console = Entry(self.bottom_frame, width=96)  # поле ввода
-        self.commands = {
+        self.window: Tk = Tk()  # окно
+        self.top_frame: Frame = Frame(self.window)  # верхнее поле для текстовых полей
+        self.bottom_frame: Frame = Frame(self.window)  # нижнее поле для поля ввода и вывода текущего пути
+        self.file_list: Listbox = Listbox(self.top_frame, width=30, height=20)  # доступные каталоги
+        self.file_content: Listbox = Listbox(self.top_frame, width=70, height=20)  # содержимое файла
+        self.text: StringVar = StringVar()  # переменная для хранения текущего пути для его вывода
+        self.label: Label = Label(self.bottom_frame, width=96, textvariable=self.text)  # текущий путь
+        self.console: Entry = Entry(self.bottom_frame, width=96)  # поле ввода
+        self.commands: dict = {
             "createdir": self.create_dir,  # создать каталог: createdir dirname
             "removedir": self.remove_dir,  # удалить каталог: removedir dirname
             "changedir": self.change_dir,  # сменить каталог: changedir path
@@ -30,16 +32,16 @@ class FileManager:
             "archive": self.archive,
             "extract": self.extract
         }
-        self.root = self.set_root()  # текущий путь
-        self.path = ""  # видимый для пользователя путь
+        self.root: str = self.set_root()  # текущий путь
+        self.path: str = ""  # видимый для пользователя путь
         self.configure_window()  # настройка окна
 
     # установка корневого каталога
     @staticmethod
     def set_root():
-        with open("setting.txt", "r") as file:
-            rootdir = file.read().split('"')[1].replace("\\", "\\\\")
-        os.chdir(rootdir)
+        with open(FileManager.SETTINGS, "r") as file:
+            root_dir: str = file.read().split('"')[1].replace("\\", "\\\\")
+        os.chdir(root_dir)
         return os.getcwd()
 
     # настройка окна
@@ -76,13 +78,13 @@ class FileManager:
         self.text.set(self.path)
 
     # отображение содержимого файла
-    def display_content(self, content):
+    def display_content(self, content: list):
         self.file_content.delete(0, END)
         for line in content:
             self.file_content.insert(END, line)
 
     # считывание и выполнение команды из поля ввода
-    def get_command(self, event):
+    def get_command(self, event: Event):
         line = self.console.get().split(" ")
         self.console.delete(0, END)
         if len(line) > 0:
@@ -98,7 +100,7 @@ class FileManager:
         if len(args) > 1:
             showerror("Warning", "Too many arguments")
         else:
-            dirName = args[0]
+            dirName: str = args[0]
             try:
                 os.mkdir(os.getcwd() + os.sep + dirName)
                 self.display_dir_content()
@@ -110,7 +112,7 @@ class FileManager:
         if len(args) > 1:
             showerror("Warning", "Too many arguments")
         else:
-            dirName = args[0]
+            dirName: str = args[0]
             try:
                 shutil.rmtree(os.getcwd() + os.sep + dirName)
                 self.display_dir_content()
@@ -123,7 +125,7 @@ class FileManager:
             showerror("Warning", "Too many arguments")
         else:
             try:
-                temp_path = os.getcwd()
+                temp_path: str = os.getcwd()
                 os.chdir(args[0])
                 if self.root not in os.getcwd():
                     showerror("Warning", "Incorrect path")
@@ -151,7 +153,8 @@ class FileManager:
             showerror("Warning", "Too few arguments")
         else:
             try:
-                file_name, data = args[0], args[1:]
+                file_name: str = args[0]
+                data: tuple = args[1:]
                 with open(file_name, 'a') as file:
                     file.write(" ".join(data) + "\n")
                 self.display_dir_content()
@@ -166,7 +169,7 @@ class FileManager:
             try:
                 file_name = args[0]
                 with open(file_name, 'r') as file:
-                    self.display_content(file)
+                    self.display_content(file.readlines())
             except Exception as e:
                 showerror("Warning", str(e))
 
@@ -181,8 +184,8 @@ class FileManager:
 
     # копирование файлов
     def copy_files(self, *args):
-        file_names = args[:-1]
-        dirPath = args[-1]
+        file_names: tuple = args[:-1]
+        dirPath: str = args[-1]
         try:
             for file_name in file_names:
                 shutil.copy(file_name, dirPath)
@@ -192,8 +195,8 @@ class FileManager:
 
     # перемещение файлов
     def move_files(self, *args):
-        file_names = args[:-1]
-        dirPath = args[-1]
+        file_names: tuple = args[:-1]
+        dirPath: str = args[-1]
         for file_name in file_names:
             shutil.move(file_name, dirPath)
 
@@ -206,8 +209,8 @@ class FileManager:
         elif len(args) < 2:
             showerror("Warning", "Too few arguments")
         else:
-            file_name = args[0]
-            new_file_name = args[1]
+            file_name: str = args[0]
+            new_file_name: str = args[1]
             if ".txt" not in new_file_name:
                 new_file_name += ".txt"
             os.rename(file_name, new_file_name)
