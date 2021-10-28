@@ -1,8 +1,8 @@
-from FileManager import *
+from Auth import Auth
 
 
 def main():
-    FileManager()
+    Auth()
 
 
 if __name__ == '__main__':
