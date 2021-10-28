@@ -49,13 +49,13 @@ class Auth:
             if login in self.logins.keys():
                 if password == self.logins[login]:
                     self.window.destroy()
-                    FileManager()
+                    FileManager(login)
                 else:
                     showerror("Warning", "Неправильный логин или пароль")
             else:
                 add_auth(Auth.AUTH, login, password)
                 self.window.destroy()
-                FileManager()
+                FileManager(login)
 
 
 # получение данных об аутентификации

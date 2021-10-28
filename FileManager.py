@@ -1,4 +1,5 @@
 import os
+import os.path
 import shutil
 from tkinter import *
 from tkinter.font import Font
@@ -10,7 +11,7 @@ from json import load
 class FileManager:
     SETTINGS: str = "settings.json"
 
-    def __init__(self):
+    def __init__(self, user_dir: str):
         self.window: Tk = Tk()  # окно
         self.top_frame: Frame = Frame(self.window)  # верхнее поле для текстовых полей
         self.bottom_frame: Frame = Frame(self.window)  # нижнее поле для поля ввода и вывода текущего пути
@@ -33,16 +34,17 @@ class FileManager:
             "archive": self.archive,  # архивировать файлы: archive filename1 ... filenameN
             "extract": self.extract  # разархивировать архив: extract archive_name
         }
-        self.root: str = self.set_root()  # текущий путь
+        self.root: str = self.set_root(user_dir)  # текущий путь
         self.path: str = ""  # видимый для пользователя путь
         self.configure_window()  # настройка окна
 
     # установка корневого каталога
-    @staticmethod
-    def set_root():
+    def set_root(self, user_dir: str):
         with open(FileManager.SETTINGS, "r") as settings:
             root_dir: str = load(settings)["directory"].replace("\\", "\\\\")
-        os.chdir(root_dir)
+        if not os.path.exists(root_dir + os.sep + user_dir):
+            self.create_dir(root_dir + os.sep + user_dir)
+        os.chdir(root_dir + os.sep + user_dir)
         return os.getcwd()
 
     # настройка окна
