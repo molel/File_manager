@@ -34,8 +34,8 @@
 ![screenshot](/screenshots/9.1.png)
 ![screenshot](/screenshots/9.2.png)
 10. Переименование файлов:
-![screenshot](/screenshots/7.1.png)
-![screenshot](/screenshots/7.2.png)
+![screenshot](/screenshots/10.1.png)
+![screenshot](/screenshots/10.2.png)
 
 ## Дополнительные задания
 1. Разработайте псевдографический интерфейс для разработанного в основном задании файлового менеджера по аналогии с программами Far или Midnight Commander. 
