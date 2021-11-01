@@ -42,6 +42,8 @@ class FileManager:
     def set_root(self, user_dir: str):
         with open(FileManager.SETTINGS, "r") as settings:
             root_dir: str = load(settings)["directory"].replace("\\", "\\\\")
+        if not os.path.exists(root_dir):
+            self.create_dir(root_dir)
         if not os.path.exists(root_dir + os.sep + user_dir):
             self.create_dir(root_dir + os.sep + user_dir)
         os.chdir(root_dir + os.sep + user_dir)
